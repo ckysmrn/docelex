@@ -23,6 +23,8 @@ pub const Token = struct {
 
 pub const State = enum {
     start,
-    invalid,
-    ident,
+    illegal,
+    identifier,
+    numberic,
+    startwith_at,
 };
