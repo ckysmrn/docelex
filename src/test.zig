@@ -13,12 +13,13 @@ pub fn is_ident_head(c: u8) bool {
 
 test "Cursor::basic" {
     var cursor = Cursor.new(code);
-    std.debug.print("pos: {d}", .{cursor.getTokenLen()});
+    std.debug.print("len_remaining: {d}\n", .{cursor.len_remaining});
+    std.debug.print("pos: {d}\n", .{cursor.getTokenLen()});
     cursor.moveWhile(is_ident_head);
     
-    std.debug.print("pos: {d}", .{cursor.getTokenLen()});
+    std.debug.print("pos: {d}\n", .{cursor.getTokenLen()});
     cursor.resetTokenLen();
-    std.debug.print("len_remaining: {d}", .{cursor.len_remaining});
+    std.debug.print("len_remaining: {d}\n", .{cursor.len_remaining});
 }
 
 
