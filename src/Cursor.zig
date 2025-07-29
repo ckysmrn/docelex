@@ -44,7 +44,7 @@ pub inline fn resetTokenLen(self: *Self) void {
 }
 
 pub fn moveWhile(self: *Self, comptime f: WhilePredicate) void {
-    while(f(self.peek(0)) and !self.isEnd()) {
+    while(f(self.peek(0).?) and !self.isEnd()) {
         self.index += 1;
     }
 }
