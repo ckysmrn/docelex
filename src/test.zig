@@ -6,10 +6,7 @@ const Token = tknzr.Token;
 const State = tknzr.State;
 const Tag = tknzr.Tag;
 
-const code = 
-    \\let a = 1;
-    \\let b = 2;
-    ;
+const code = "let a = 1;";
 
 
 pub fn is_ident_head(c: u8) bool {
