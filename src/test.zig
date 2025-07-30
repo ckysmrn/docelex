@@ -32,7 +32,6 @@ fn tokenize(self: *Cursor) Token {
                 self.index += 1;
                 while (self.first() == ' ') {
                     self.index += 1;
-                    len += 1;
                 }
                 const len = self.getTokenLen();
                 self.resetTokenLen();
@@ -42,7 +41,6 @@ fn tokenize(self: *Cursor) Token {
                 self.index += 1;
                 while (self.first() == '\n') {
                     self.index += 1;
-                    len += 1;
                 }
                 const len = self.getTokenLen();
                 self.resetTokenLen();
