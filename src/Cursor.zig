@@ -19,7 +19,7 @@ pub inline fn peek(self: Self, comptime n: u32) ?u8 {
     return self.chars[i];
 }
 
-pub inline fn first(self: Self) u32 {
+pub inline fn first(self: Self) u8 {
     return self.peek(1);
 }
 
