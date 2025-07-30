@@ -34,6 +34,7 @@ fn tokenize(self: *Cursor) Token {
                 if (self.first() != ' ') {
                     const len = self.getTokenLen();
                     self.resetTokenLen();
+                    self.index += 1;
                     return .{ .tag = .space, .len = len };
                 }
                 self.index += 1;
@@ -43,6 +44,7 @@ fn tokenize(self: *Cursor) Token {
                 if (self.first() == '\n') {
                    const len = self.getTokenLen();
                    self.resetTokenLen();
+                   self.index += 1;
                    return .{ .tag = .newline, .len = len };
                 }
                 self.index += 1;
