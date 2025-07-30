@@ -68,7 +68,8 @@ test "Cursor::basic" {
 
 test "tokenize" {
     var cursor = Cursor.new(code);
-    while (tokenize(&cursor)) |token| {
+    while (true) {
+        const token = tokenize(&cursor);
         if (token.tag == .eof) break;
         std.debug.print("tag: {?}, len: {d}", token.tag, token.len);
     }
