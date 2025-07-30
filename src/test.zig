@@ -30,22 +30,23 @@ fn tokenize(self: *Cursor) Token {
                 return .{ .tag = .invalid, .len = len };
             },
             ' ' => {
-                self.index += 1;
-                while (self.first() == ' ') {
-                    self.index += 1;
+                
+                if (self.first() != " ") {
+                    const len = self.getTokenLen();
+                    self.resetTokenLen();
+                    return .{ .tag = .space, .len = len };
                 }
-                const len = self.getTokenLen();
-                self.resetTokenLen();
-                return .{ .tag = .space, .len = len };
+                self.index += 1;
+                continue :state .start;
             },
             '\n' => {
-                self.index += 1;
-                while (self.first() == '\n') {
-                    self.index += 1;
+                if (self.first() == '\n') {
+                   const len = self.getTokenLen();
+                   self.resetTokenLen();
+                   return .{ .tag = .newline, .len = len };
                 }
-                const len = self.getTokenLen();
-                self.resetTokenLen();
-                return .{ .tag = .newline, .len = len };
+                self.index += 1;
+                continue :state .start;
             },
             '\t', '\r' => {
                 self.index += 1;
