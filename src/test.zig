@@ -31,7 +31,7 @@ fn tokenize(self: *Cursor) Token {
             },
             ' ' => {
                 
-                if (self.first() != " ") {
+                if (self.first() != ' ') {
                     const len = self.getTokenLen();
                     self.resetTokenLen();
                     return .{ .tag = .space, .len = len };
