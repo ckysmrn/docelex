@@ -81,3 +81,10 @@ test "Cursor::basic" {
     std.debug.print("len_remaining: {d}\n", .{cursor.len_remaining});
 }
 
+test "tokenize single" {
+    var cursor = Cursor.new(code);
+    std.debug.print("len_remaining: {d}\n", .{cursor.len_remaining});
+    const token = tokenize(&cursor);
+    std.debug.print("tag: {?}, len: {d}", .{token.tag, token.len});
+
+}
