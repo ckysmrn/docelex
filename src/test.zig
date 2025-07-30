@@ -15,23 +15,23 @@ pub fn is_ident_head(c: u8) bool {
 
 
 fn tokenize(self: *Cursor) Token {
-
+    std.debug.print("before, pos: {d}", .{self.getTokenLen()});
     state: switch(State.start) {
         .start => switch(self.peek(0).?) {
             0 => if (self.index == self.chars.len) {
                 return .{ .tag = .eof, .len = 0 };
             } else {
+                self.index += 1;
                 const len = self.getTokenLen();
                 self.resetTokenLen();
-                self.index += 1;
                 return .{ .tag = .invalid, .len = len };
             },
             ' ' => {
                 
                 if (self.first() != ' ') {
+                    self.index += 1;
                     const len = self.getTokenLen();
                     self.resetTokenLen();
-                    self.index += 1;
                     return .{ .tag = .space, .len = len };
                 }
                 self.index += 1;
@@ -39,9 +39,9 @@ fn tokenize(self: *Cursor) Token {
             },
             '\n' => {
                 if (self.first() == '\n') {
+                   self.index += 1;
                    const len = self.getTokenLen();
                    self.resetTokenLen();
-                   self.index += 1;
                    return .{ .tag = .newline, .len = len };
                 }
                 self.index += 1;
@@ -61,6 +61,15 @@ fn tokenize(self: *Cursor) Token {
 }
 
 
+test "tokenize" {
+    var cursor = Cursor.new(code);
+    while (true) {
+        const token = tokenize(&cursor);
+        if (token.tag == .eof) break;
+        std.debug.print("tag: {?}, len: {d}, index: {d}\n", .{token.tag, token.len, cursor.index});
+    }
+}
+
 test "Cursor::basic" {
     var cursor = Cursor.new(code);
     std.debug.print("len_remaining: {d}\n", .{cursor.len_remaining});
@@ -72,12 +81,3 @@ test "Cursor::basic" {
     std.debug.print("len_remaining: {d}\n", .{cursor.len_remaining});
 }
 
-
-test "tokenize" {
-    var cursor = Cursor.new(code);
-    while (true) {
-        const token = tokenize(&cursor);
-        if (token.tag == .eof) break;
-        std.debug.print("tag: {?}, len: {d}, index: {d}\n", .{token.tag, token.len, cursor.index});
-    }
-}
