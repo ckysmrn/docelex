@@ -1,5 +1,11 @@
 const Cursor = @import("Cursor.zig");
+const tknzr = @import("tknzr.zig");
 const std = @import("std");
+
+const Token = tknzr.Token;
+const State = tknzr.State;
+const Tag = tknzr.Tag;
+
 const code = 
     \\let a = 1;
     \\let b = 2;
@@ -8,6 +14,43 @@ const code =
 
 pub fn is_ident_head(c: u8) bool {
     return std.ascii.isAlphabetic(c) or c == '_';
+}
+
+
+fn tokenize(self: *Cursor) Token {
+
+    state: switch(State.start) {
+        .start => switch(self.peek(0)) {
+            0 => if (self.index == self.chars.len) {
+                return .{ .tag = .eof, .len = 0 };
+            } else {
+                return .{ .tag = .invalid, .len = self.getTokenLen() };
+            },
+            ' ' => {
+                self.index += 1;
+                var len = 1;
+                while (self.first() == ' ') {
+                    self.index += 1;
+                    len += 1;
+                }
+                return .{ .tag = .space, .len = len };
+            },
+            '\n' => {
+                self.index += 1;
+                var len = 1;
+                while (self.first() == '\n') {
+                    self.index += 1;
+                    len += 1;
+                }
+                return .{ .tag = .newline, .len = len };
+            },
+            '\t', '\r' => {
+                self.index += 1;
+                continue :state .start;
+            },
+            else => return .{ .tag = .invalid, .len = self.getTokenLen() },
+        }
+    }
 }
 
 
@@ -23,3 +66,10 @@ test "Cursor::basic" {
 }
 
 
+test "tokenize" {
+    var cursor = Cursor.new(code);
+    while (tokenize(&cursor)) |token| {
+        if (token.tag == .eof) break;
+        std.debug.print("tag: {?}, len: {d}", token.tag, token.len);
+    }
+}
