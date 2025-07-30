@@ -24,8 +24,8 @@ fn tokenize(self: *Cursor) Token {
             0 => if (self.index == self.chars.len) {
                 return .{ .tag = .eof, .len = 0 };
             } else {
-                const len = cursor.getTokenLen();
-                cursor.resetTokenLen();
+                const len = self.getTokenLen();
+                self.resetTokenLen();
                 return .{ .tag = .invalid, .len = len };
             },
             ' ' => {
@@ -34,8 +34,8 @@ fn tokenize(self: *Cursor) Token {
                     self.index += 1;
                     len += 1;
                 }
-                const len = cursor.getTokenLen();
-                cursor.resetTokenLen();
+                const len = self.getTokenLen();
+                self.resetTokenLen();
                 return .{ .tag = .space, .len = len };
             },
             '\n' => {
@@ -44,8 +44,8 @@ fn tokenize(self: *Cursor) Token {
                     self.index += 1;
                     len += 1;
                 }
-                const len = cursor.getTokenLen();
-                cursor.resetTokenLen();
+                const len = self.getTokenLen();
+                self.resetTokenLen();
                 return .{ .tag = .newline, .len = len };
             },
             '\t', '\r' => {
