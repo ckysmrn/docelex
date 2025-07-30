@@ -20,7 +20,7 @@ pub fn is_ident_head(c: u8) bool {
 fn tokenize(self: *Cursor) Token {
 
     state: switch(State.start) {
-        .start => switch(self.peek(0)) {
+        .start => switch(self.peek(0).?) {
             0 => if (self.index == self.chars.len) {
                 return .{ .tag = .eof, .len = 0 };
             } else {
