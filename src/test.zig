@@ -26,6 +26,7 @@ fn tokenize(self: *Cursor) Token {
             } else {
                 const len = self.getTokenLen();
                 self.resetTokenLen();
+                self.index += 1;
                 return .{ .tag = .invalid, .len = len };
             },
             ' ' => {
@@ -50,7 +51,10 @@ fn tokenize(self: *Cursor) Token {
                 self.index += 1;
                 continue :state .start;
             },
-            else => return .{ .tag = .invalid, .len = self.getTokenLen() },
+            else => {
+                self.index += 1;
+                return .{ .tag = .invalid, .len = self.getTokenLen() }
+            },
         },
         else => unreachable,
     }
@@ -74,6 +78,6 @@ test "tokenize" {
     while (true) {
         const token = tokenize(&cursor);
         if (token.tag == .eof) break;
-        std.debug.print("tag: {?}, len: {d}", .{token.tag, token.len});
+        std.debug.print("tag: {?}, len: {d}, index: {d}\n", .{token.tag, token.len, token.index});
     }
 }
