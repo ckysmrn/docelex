@@ -48,7 +48,7 @@ fn tokenize(self: *Cursor) Token {
                 self.index += 1;
                 continue :state .start;
             },
-            else => return .{ .tag = .invalid, .len = @intCast(self.getTokenLen()) },
+            else => return .{ .tag = .invalid, .len = self.getTokenLen() },
         },
         else => unreachable,
     }

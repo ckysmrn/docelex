@@ -35,7 +35,7 @@ pub inline fn isEnd(self: Self) bool {
     return self.index == self.chars.len;
 }
 
-pub inline fn getTokenLen(self: Self) u33 {
+pub inline fn getTokenLen(self: Self) u32 {
     return @intCast(self.len_remaining - (self.chars.len - self.index));
 }
 
