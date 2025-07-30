@@ -20,11 +20,11 @@ pub inline fn peek(self: Self, comptime n: u32) ?u8 {
 }
 
 pub inline fn first(self: Self) u8 {
-    return self.peek(1);
+    return self.peek(1).?;
 }
 
 pub inline fn second(self: Self) u8 {
-    return self.peek(2);
+    return self.peek(2).?;
 }
 
 pub fn bump(self: *Self) ?u8 {
