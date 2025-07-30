@@ -24,24 +24,28 @@ fn tokenize(self: *Cursor) Token {
             0 => if (self.index == self.chars.len) {
                 return .{ .tag = .eof, .len = 0 };
             } else {
-                return .{ .tag = .invalid, .len = self.getTokenLen() };
+                const len = cursor.getTokenLen();
+                cursor.resetTokenLen();
+                return .{ .tag = .invalid, .len = len };
             },
             ' ' => {
                 self.index += 1;
-                var len = 1;
                 while (self.first() == ' ') {
                     self.index += 1;
                     len += 1;
                 }
+                const len = cursor.getTokenLen();
+                cursor.resetTokenLen();
                 return .{ .tag = .space, .len = len };
             },
             '\n' => {
                 self.index += 1;
-                var len = 1;
                 while (self.first() == '\n') {
                     self.index += 1;
                     len += 1;
                 }
+                const len = cursor.getTokenLen();
+                cursor.resetTokenLen();
                 return .{ .tag = .newline, .len = len };
             },
             '\t', '\r' => {
