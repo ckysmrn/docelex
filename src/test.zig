@@ -71,6 +71,6 @@ test "tokenize" {
     while (true) {
         const token = tokenize(&cursor);
         if (token.tag == .eof) break;
-        std.debug.print("tag: {?}, len: {d}", token.tag, token.len);
+        std.debug.print("tag: {?}, len: {d}", .{token.tag, token.len});
     }
 }
