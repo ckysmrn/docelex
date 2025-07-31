@@ -56,8 +56,8 @@ fn tokenize(self: *Cursor) Token {
                 continue :state .start;
             },
             'a'...'z', 'A'...'Z', '_' => {
-                self.index += 1;
                 const beg = self.index;
+                self.index += 1;
 
                 self.moveWhile(is_ident_head);
                 const len = self.calculateLen();
