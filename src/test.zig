@@ -53,7 +53,7 @@ fn tokenize(self: *Cursor) Token {
             },
             else => {
                 self.index += 1;
-                return .{ .tag = .invalid, .len = self.getTokenLen() };
+                return .{ .tag = .invalid, .len = self.calculateLen() };
             },
         },
         else => unreachable,
