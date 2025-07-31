@@ -37,7 +37,7 @@ jobs:
         run: zig test src/test.zig
 
       - name: Build Dynamic Library
-        run: zig build --summary all
+        run: zig build --summary all -foptimize=ReleaseSafe
 
       - name: Check outputs
         run: ls -lah ./*/*
