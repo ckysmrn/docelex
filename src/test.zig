@@ -63,7 +63,7 @@ fn tokenize(self: *Cursor) Token {
                 const len = self.calculateLen();
                 const lexeme = self.chars[beg..self.index];
                 println("try detect keywords: {s}", .{lexeme});
-                const tag = if (tknzr.getKeyword(lexeme)) |kw| kw or .ident;
+                const tag = if (tknzr.getKeyword(lexeme)) |kw| kw orelse .ident;
                 return .{.tag = tag, .len = len};
             },
             '0'...'9' => {
