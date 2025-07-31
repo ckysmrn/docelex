@@ -44,7 +44,7 @@ pub inline fn recalculateLen(self: *Self) void {
 }
 
 pub fn moveWhile(self: *Self, comptime f: WhilePredicate) void {
-    while(f(self.peek(0).?) and !self.isEnd()) {
+    while(!self.isEnd() and f(self.peek(0).?)) {
         self.index += 1;
     }
 }

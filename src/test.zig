@@ -34,10 +34,6 @@ fn tokenize(self: *Cursor) Token {
             ' ' => {
 
                 self.index += 1;
-                println("on <space>: at({d})", .{self.index});
-                println("on <space>: {c}", .{self.peek(0).?});
-                println("on <space>: {c}", .{self.peek(1).?});
-                println("on <space>: {c}", .{self.peek(2).?});
                 while (self.peek(0).? == ' ') {
                     self.index += 1;
                 }
@@ -45,13 +41,12 @@ fn tokenize(self: *Cursor) Token {
                 return .{ .tag = .space, .len = len };
             },
             '\n' => {
-                if (self.first() == '\n') {
-                   const len = self.calculateLen();
-                   self.index += 1;
-                   return .{ .tag = .newline, .len = len };
-                }
                 self.index += 1;
-                continue :state .start;
+                while (self.peek(0).? == '\n') {
+                    self.index += 1;
+                }
+                const len = self.calculateLen();
+                return .{ .tag = .space, .len = len };
             },
             '\t', '\r' => {
                 self.index += 1;
@@ -62,6 +57,13 @@ fn tokenize(self: *Cursor) Token {
                 self.moveWhile(is_ident_head);
                 const len = self.calculateLen();
                 return .{.tag = .ident, .len = len};
+            },
+            '0'...'9' => {
+                self.index += 1;
+                self.moveWhile(std.ascii.isDigit);
+                return .{
+                    .tag = .numberic, .len = self.calculateLen()
+                };
             },
             '=' => {
                 self.index += 1;
