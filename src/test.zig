@@ -34,6 +34,8 @@ fn tokenize(self: *Cursor) Token {
             ' ' => {
 
                 self.index += 1;
+                println("on <space>: at({d})", .{self.index});
+                println("on <space>: {c}", .{self.peek(0).?});
                 println("on <space>: {c}", .{self.peek(1).?});
                 println("on <space>: {c}", .{self.peek(2).?});
                 while (self.peek(1).? == ' ') {
