@@ -7,8 +7,8 @@ const State = tknzr.State;
 const Tag = tknzr.Tag;
 
 const code =
-    \\let abc = 5;
-    \\let    xyz    =        abc;
+    \\const abc = 5;
+    \\const    xyz    =        abc;
     ;
 
 fn println(comptime fmt: [:0]const u8, args: anytype) void {
