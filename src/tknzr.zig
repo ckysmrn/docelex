@@ -12,6 +12,14 @@ pub const Tag = enum {
     eq2,
     numberic,
     semicolon,
+
+    word_and,
+    word_break,
+    word_const,
+    word_or,
+    word_var,
+
+
 };
 
 
@@ -32,3 +40,15 @@ pub const State = enum {
     numberic,
     startwith_at,
 };
+
+const keywords = std.StaticStringMap(Tag).initComptime(.{
+    .{"and", .word_and},
+    .{"break", .word_break},
+    .{"const", .word_const},
+    .{"or", .word_or},
+    .{"var", .word_var},
+});
+
+pub fn getKeyword(bytes: []const u8) ?Tag {
+    return keywords.get(bytes);
+}
