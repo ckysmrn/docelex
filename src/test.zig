@@ -34,8 +34,11 @@ fn tokenize(self: *Cursor) Token {
             ' ' => {
 
                 if (self.first() != ' ') {
-                    const len = self.calculateLen();
                     self.index += 1;
+                    while (!self.isEnd() and self.peek(1) == ' ') {
+                        self.index += 1;
+                    }
+                    const len = self.calculateLen();
                     return .{ .tag = .space, .len = len };
                 }
                 self.index += 1;
