@@ -76,11 +76,14 @@ test "tokenize" {
     while (true) {
         const token = tokenize(&cursor);
         if (token.tag == .eof) break;
-        println("tag: {?}, len: {d}, index: {d}\n", .{token.tag, token.len, cursor.index});
+        const beg = cursor.checkpoint;
+
+        const lexeme = cursor.chars[beg..beg+token.len];
+        println("tag: {?}, len: {d}, index: {d}, lexeme: {s}", .{token.tag, token.len, cursor.index, lexeme});
     }
 }
 
-test "Cursor::basic" {
+test "Cursor::basic " {
     var cursor = Cursor.new(code);
     println("checkpoint: {d}\n", .{cursor.checkpoint});
     println("pos: {d}\n", .{cursor.calculateLen()});
@@ -91,7 +94,7 @@ test "Cursor::basic" {
     println("checkpoint: {d}\n", .{cursor.checkpoint});
 }
 
-test "tokenize single" {
+test "tokenize single " {
     var cursor = Cursor.new(code);
     println("checkpoint: {d}\n", .{cursor.checkpoint});
     const token = tokenize(&cursor);
