@@ -8,6 +8,9 @@ const Tag = tknzr.Tag;
 
 const code = "let a = 1;";
 
+fn println(comptime fmt: [:0]const u8, args: anytype) void {
+    std.debug.print(fmt ++ '\n', args);
+}
 
 pub fn is_ident_head(c: u8) bool {
     return std.ascii.isAlphabetic(c) or c == '_';
@@ -16,7 +19,7 @@ pub fn is_ident_head(c: u8) bool {
 
 
 fn tokenize(self: *Cursor) Token {
-    std.debug.print("before, pos: {d}", .{self.calculateLen()});
+    println("before, pos: {d}", .{self.calculateLen()});
     self.recalculateLen();
 
     state: switch(State.start) {
@@ -24,15 +27,15 @@ fn tokenize(self: *Cursor) Token {
             0 => if (self.index == self.chars.len) {
                 return .{ .tag = .eof, .len = 0 };
             } else {
-                self.index += 1;
                 const len = self.calculateLen();
+                self.index += 1;
                 return .{ .tag = .invalid, .len = len };
             },
             ' ' => {
 
                 if (self.first() != ' ') {
-                    self.index += 1;
                     const len = self.calculateLen();
+                    self.index += 1;
                     return .{ .tag = .space, .len = len };
                 }
                 self.index += 1;
@@ -40,8 +43,8 @@ fn tokenize(self: *Cursor) Token {
             },
             '\n' => {
                 if (self.first() == '\n') {
-                   self.index += 1;
                    const len = self.calculateLen();
+                   self.index += 1;
                    return .{ .tag = .newline, .len = len };
                 }
                 self.index += 1;
@@ -51,9 +54,16 @@ fn tokenize(self: *Cursor) Token {
                 self.index += 1;
                 continue :state .start;
             },
-            else => {
+            'a'...'z', 'A'...'Z', '_' => {
                 self.index += 1;
-                return .{ .tag = .invalid, .len = self.calculateLen() };
+                self.moveWhile(is_ident_head);
+                const len = self.calculateLen();
+                return .{.tag = .ident, .len = len};
+            },
+            else => {
+                const len = self.calculateLen();
+                self.index += 1;
+                return .{ .tag = .invalid, .len = len };
             },
         },
         else => unreachable,
@@ -66,25 +76,25 @@ test "tokenize" {
     while (true) {
         const token = tokenize(&cursor);
         if (token.tag == .eof) break;
-        std.debug.print("tag: {?}, len: {d}, index: {d}\n", .{token.tag, token.len, cursor.index});
+        println("tag: {?}, len: {d}, index: {d}\n", .{token.tag, token.len, cursor.index});
     }
 }
 
 test "Cursor::basic" {
     var cursor = Cursor.new(code);
-    std.debug.print("checkpoint: {d}\n", .{cursor.checkpoint});
-    std.debug.print("pos: {d}\n", .{cursor.calculateLen()});
+    println("checkpoint: {d}\n", .{cursor.checkpoint});
+    println("pos: {d}\n", .{cursor.calculateLen()});
     cursor.moveWhile(is_ident_head);
 
-    std.debug.print("pos: {d}\n", .{cursor.calculateLen()});
+    println("pos: {d}\n", .{cursor.calculateLen()});
     cursor.recalculateLen();
-    std.debug.print("checkpoint: {d}\n", .{cursor.checkpoint});
+    println("checkpoint: {d}\n", .{cursor.checkpoint});
 }
 
 test "tokenize single" {
     var cursor = Cursor.new(code);
-    std.debug.print("checkpoint: {d}\n", .{cursor.checkpoint});
+    println("checkpoint: {d}\n", .{cursor.checkpoint});
     const token = tokenize(&cursor);
-    std.debug.print("tag: {?}, len: {d}", .{token.tag, token.len});
+    println("tag: {?}, len: {d}", .{token.tag, token.len});
 
 }
