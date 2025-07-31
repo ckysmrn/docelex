@@ -33,16 +33,12 @@ fn tokenize(self: *Cursor) Token {
             },
             ' ' => {
 
-                if (self.first() != ' ') {
-                    self.index += 1;
-                    while (!self.isEnd() and self.peek(1) == ' ') {
-                        self.index += 1;
-                    }
-                    const len = self.calculateLen();
-                    return .{ .tag = .space, .len = len };
-                }
                 self.index += 1;
-                continue :state .start;
+                while (!self.isEnd() and self.peek(1) == ' ') {
+                    self.index += 1;
+                }
+                const len = self.calculateLen();
+                return .{ .tag = .space, .len = len };
             },
             '\n' => {
                 if (self.first() == '\n') {
