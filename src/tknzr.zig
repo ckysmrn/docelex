@@ -8,6 +8,9 @@ pub const Tag = enum {
     ident,
     space,
     newline,
+    eq1,
+    eq2,
+    semicolon,
 };
 
 

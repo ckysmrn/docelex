@@ -60,9 +60,24 @@ fn tokenize(self: *Cursor) Token {
                 const len = self.calculateLen();
                 return .{.tag = .ident, .len = len};
             },
-            else => {
-                const len = self.calculateLen();
+            '=' => {
                 self.index += 1;
+                switch (self.peek(1).?) {
+                    '=' => {
+                        self.index += 1;
+                        return .{.tag = .eq2, .len = 2};
+                    },
+                    else => return .{.tag = .eq1, len = 1};
+                }
+            },
+            ';' => {
+                self.index += 1;
+                return .{.tag = .semicolon, .len=1};
+            },
+            else => {
+                self.index += 1;
+                self.moveUntil('\n');
+                const len = self.calculateLen();
                 return .{ .tag = .invalid, .len = len };
             },
         },
