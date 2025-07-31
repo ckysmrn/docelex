@@ -9,7 +9,7 @@ pub fn build(b: *std.Build) void {
         .name = "docelex",
         .target = target,
         .optimize = optimize,
-        .root_source_file = "src/tknzr.zig",
+        .root_source_file = b.path("src/tknzr.zig"),
         .version = .{
             .major = 0, .minor = 1, .patch = 0, .build = "debug",
         }
