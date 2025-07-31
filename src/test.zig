@@ -6,7 +6,10 @@ const Token = tknzr.Token;
 const State = tknzr.State;
 const Tag = tknzr.Tag;
 
-const code = "let a = 1;";
+const code =
+    \\let abc = 5;
+    \\let xyz = abc;
+    ;
 
 fn println(comptime fmt: [:0]const u8, args: anytype) void {
     std.debug.print(fmt ++ "\n", args);
@@ -99,7 +102,7 @@ test "tokenize" {
         const beg = cursor.checkpoint;
 
         const lexeme = cursor.chars[beg..beg+token.len];
-        println("tag: {?}, len: {d}, index: {d}, lexeme: {s}", .{token.tag, token.len, cursor.index, lexeme});
+        println("tag: {?}, len: {d}, index: {d}, checkpoint: {d}, lexeme: {s}", .{token.tag, token.len, cursor.index, cursor.checkpoint, lexeme});
     }
 }
 
