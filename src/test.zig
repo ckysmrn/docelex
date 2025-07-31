@@ -27,13 +27,15 @@ fn tokenize(self: *Cursor) Token {
             0 => if (self.index == self.chars.len) {
                 return .{ .tag = .eof, .len = 0 };
             } else {
-                const len = self.calculateLen();
                 self.index += 1;
+                const len = self.calculateLen();
                 return .{ .tag = .invalid, .len = len };
             },
             ' ' => {
 
                 self.index += 1;
+                println("on <space>: {c}", self.peek(1).?);
+                println("on <space>: {c}", self.peek(2).?);
                 while (self.peek(1).? == ' ') {
                     self.index += 1;
                 }
