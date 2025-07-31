@@ -10,6 +10,7 @@ pub const Tag = enum {
     newline,
     eq1,
     eq2,
+    numberic,
     semicolon,
 };
 
