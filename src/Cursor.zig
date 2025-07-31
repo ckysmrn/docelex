@@ -32,7 +32,7 @@ pub fn bump(self: *Self) ?u8 {
 }
 
 pub inline fn isEnd(self: Self) bool {
-    return self.index == self.chars.len;
+    return self.index >= self.chars.len;
 }
 
 pub inline fn calculateLen(self: Self) u32 {
@@ -50,7 +50,7 @@ pub fn moveWhile(self: *Self, comptime f: WhilePredicate) void {
 }
 
 pub fn moveUntil(self: *Self, c: u8) void {
-    while(self.peek(0) != c) {
+    while(!self.isEnd() and self.peek(0) != c) {
         self.index += 1;
     }
 }

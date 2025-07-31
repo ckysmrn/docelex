@@ -67,9 +67,8 @@ fn tokenize(self: *Cursor) Token {
                         self.index += 1;
                         return .{.tag = .eq2, .len = 2};
                     },
-                    else => return .{.tag = .invalid, .len = 1}
+                    else => return .{.tag = .eq1, .len = 1}
                 }
-                return .{.tag = .eq1, .len = 1};
             },
             ';' => {
                 self.index += 1;
