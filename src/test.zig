@@ -34,7 +34,7 @@ fn tokenize(self: *Cursor) Token {
             ' ' => {
 
                 self.index += 1;
-                while (!self.isEnd() and self.peek(1) == ' ') {
+                while (self.peek(1).? == ' ') {
                     self.index += 1;
                 }
                 const len = self.calculateLen();
