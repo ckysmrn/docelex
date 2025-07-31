@@ -9,7 +9,7 @@ const Tag = tknzr.Tag;
 const code = "let a = 1;";
 
 fn println(comptime fmt: [:0]const u8, args: anytype) void {
-    std.debug.print(fmt ++ '\n', args);
+    std.debug.print(fmt ++ "\n", args);
 }
 
 pub fn is_ident_head(c: u8) bool {
