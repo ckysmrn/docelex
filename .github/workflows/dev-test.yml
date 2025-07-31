@@ -34,4 +34,4 @@ jobs:
           version: ${{ steps.zig-version.outputs.version }}
 
       - name: Run Zig tests
-        run: zig test src/main.zig
+        run: zig test src/test.zig
