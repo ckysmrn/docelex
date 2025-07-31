@@ -1,6 +1,6 @@
 chars: [:0]const u8,
 index: usize,
-len_remaining: usize,
+checkpoint: usize,
 
 const Self = @This();
 pub const WhilePredicate = fn(u8) bool;
@@ -9,7 +9,7 @@ pub fn new(chars: [:0]const u8) Self {
     return .{
         .chars = chars,
         .index = 0,
-        .len_remaining = chars.len
+        .checkpoint = 0,
     };
 }
 
@@ -35,12 +35,12 @@ pub inline fn isEnd(self: Self) bool {
     return self.index == self.chars.len;
 }
 
-pub inline fn getTokenLen(self: Self) u32 {
-    return @intCast(self.len_remaining - (self.chars.len - self.index));
+pub inline fn calculateLen(self: Self) u32 {
+    return @intCast(self.index - self.checkpoint);
 }
 
-pub inline fn resetTokenLen(self: *Self) void {
-    self.len_remaining = (self.chars.len - self.index);
+pub inline fn recalculateLen(self: *Self) void {
+    self.checkpoint = self.index;
 }
 
 pub fn moveWhile(self: *Self, comptime f: WhilePredicate) void {

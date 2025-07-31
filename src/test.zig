@@ -14,24 +14,25 @@ pub fn is_ident_head(c: u8) bool {
 }
 
 
+
 fn tokenize(self: *Cursor) Token {
-    std.debug.print("before, pos: {d}", .{self.getTokenLen()});
+    std.debug.print("before, pos: {d}", .{self.calculateLen()});
+    self.recalculateLen();
+
     state: switch(State.start) {
         .start => switch(self.peek(0).?) {
             0 => if (self.index == self.chars.len) {
                 return .{ .tag = .eof, .len = 0 };
             } else {
                 self.index += 1;
-                const len = self.getTokenLen();
-                self.resetTokenLen();
+                const len = self.calculateLen();
                 return .{ .tag = .invalid, .len = len };
             },
             ' ' => {
-                
+
                 if (self.first() != ' ') {
                     self.index += 1;
-                    const len = self.getTokenLen();
-                    self.resetTokenLen();
+                    const len = self.calculateLen();
                     return .{ .tag = .space, .len = len };
                 }
                 self.index += 1;
@@ -40,8 +41,7 @@ fn tokenize(self: *Cursor) Token {
             '\n' => {
                 if (self.first() == '\n') {
                    self.index += 1;
-                   const len = self.getTokenLen();
-                   self.resetTokenLen();
+                   const len = self.calculateLen();
                    return .{ .tag = .newline, .len = len };
                 }
                 self.index += 1;
@@ -72,18 +72,18 @@ test "tokenize" {
 
 test "Cursor::basic" {
     var cursor = Cursor.new(code);
-    std.debug.print("len_remaining: {d}\n", .{cursor.len_remaining});
-    std.debug.print("pos: {d}\n", .{cursor.getTokenLen()});
+    std.debug.print("checkpoint: {d}\n", .{cursor.checkpoint});
+    std.debug.print("pos: {d}\n", .{cursor.calculateLen()});
     cursor.moveWhile(is_ident_head);
-    
-    std.debug.print("pos: {d}\n", .{cursor.getTokenLen()});
-    cursor.resetTokenLen();
-    std.debug.print("len_remaining: {d}\n", .{cursor.len_remaining});
+
+    std.debug.print("pos: {d}\n", .{cursor.calculateLen()});
+    cursor.recalculateLen();
+    std.debug.print("checkpoint: {d}\n", .{cursor.checkpoint});
 }
 
 test "tokenize single" {
     var cursor = Cursor.new(code);
-    std.debug.print("len_remaining: {d}\n", .{cursor.len_remaining});
+    std.debug.print("checkpoint: {d}\n", .{cursor.checkpoint});
     const token = tokenize(&cursor);
     std.debug.print("tag: {?}, len: {d}", .{token.tag, token.len});
 
