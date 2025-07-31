@@ -38,7 +38,7 @@ fn tokenize(self: *Cursor) Token {
                 println("on <space>: {c}", .{self.peek(0).?});
                 println("on <space>: {c}", .{self.peek(1).?});
                 println("on <space>: {c}", .{self.peek(2).?});
-                while (self.peek(1).? == ' ') {
+                while (self.peek(0).? == ' ') {
                     self.index += 1;
                 }
                 const len = self.calculateLen();
