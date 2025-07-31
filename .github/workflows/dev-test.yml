@@ -40,4 +40,4 @@ jobs:
         run: zig build --summary all
 
       - name: Check outputs
-        run: ls -lah ./*
+        run: ls -lah ./*/*
