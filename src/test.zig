@@ -8,7 +8,7 @@ const Tag = tknzr.Tag;
 
 const code =
     \\let abc = 5;
-    \\let xyz = abc;
+    \\let    xyz    =        abc;
     ;
 
 fn println(comptime fmt: [:0]const u8, args: anytype) void {
@@ -49,7 +49,7 @@ fn tokenize(self: *Cursor) Token {
                     self.index += 1;
                 }
                 const len = self.calculateLen();
-                return .{ .tag = .space, .len = len };
+                return .{ .tag = .newline, .len = len };
             },
             '\t', '\r' => {
                 self.index += 1;
